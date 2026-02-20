@@ -459,23 +459,6 @@ const Hero = ({ scrollTo }) => {
             </motion.a>
           ))}
         </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2"
-        >
-          <motion.button
-            onClick={() => scrollTo("about")}
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="p-2 sm:p-3 rounded-full border border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm shadow-md hover-lift"
-          >
-            <ArrowDown size={14} className="sm:w-4 sm:h-4 text-black dark:text-white" />
-          </motion.button>
-        </motion.div>
       </motion.div>
 
       {/* Gradient Fades */}
