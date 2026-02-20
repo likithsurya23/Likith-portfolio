@@ -1,5 +1,5 @@
-// File: src/sections/about/About.jsx
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import useNetworkAnimation from "../../hooks/useNetworkAnimation";
 import { motion } from "framer-motion";
 import {
   Code2,
@@ -17,6 +17,8 @@ import SectionHeading from "../../components/ui/SectionHeading";
 import profileImage from "../../assets/goku.jpeg"; // Adjust path as needed
 
 const About = () => {
+  const canvasRef = useRef(null);
+
   const features = [
     {
       icon: Code2,
@@ -58,6 +60,17 @@ const About = () => {
     "AI/ML",
   ];
 
+  // Network animation with interconnected moving points
+  useNetworkAnimation(canvasRef, {
+    numPoints: 20,
+    velocity: 0.2,
+    radiusBase: 1.5,
+    radiusVar: 2.5,
+    opacityMult: 0.6,
+    strokeDark: 'rgba(255, 255, 255, 0.1)',
+    strokeLight: 'rgba(0, 0, 0, 0.08)',
+  });
+
   // Animation variants for staggered children
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -87,8 +100,18 @@ const About = () => {
       id="about"
       className="py-16 sm:py-20 md:py-24 lg:py-32 relative overflow-hidden bg-white dark:bg-black transition-colors duration-500"
     >
+      {/* Canvas for interconnected points animation - Same as Hero.jsx */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-auto z-0"
+        style={{ opacity: 0.6 }}
+      />
+
+      {/* Subtle gradient overlays for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/30 dark:from-black/30 dark:via-transparent dark:to-black/30 pointer-events-none z-[5]" />
+
       {/* Simple Border Decoration */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none z-[5]">
         <div className="absolute top-0 left-0 right-0 h-px bg-black/10 dark:bg-white/10" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 dark:bg-white/10" />
       </div>
@@ -125,8 +148,8 @@ const About = () => {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 mb-4 sm:mb-5 rounded-full overflow-hidden ring-4 ring-black/10 dark:ring-white/10"
             >
-              <img 
-                src={profileImage} 
+              <img
+                src={profileImage}
                 alt="Likith D"
                 className="w-full h-full object-cover"
               />
@@ -155,7 +178,7 @@ const About = () => {
             {/* Bio Cards */}
             <motion.div
               variants={itemVariants}
-              className="p-5 sm:p-6 md:p-8 border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-xl"
+              className="p-5 sm:p-6 md:p-8 border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-xl backdrop-blur-sm bg-white/90 dark:bg-black/90"
             >
               <p className="text-sm sm:text-base md:text-lg text-black/60 dark:text-white/60 leading-relaxed">
                 I'm passionate about building intelligent systems that create
@@ -178,7 +201,7 @@ const About = () => {
                   <motion.div
                     key={stat.label}
                     whileHover={{ y: -4 }}
-                    className="p-3 sm:p-4 text-center border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-lg"
+                    className="p-3 sm:p-4 text-center border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:border-black dark:hover:border-white transition-all rounded-lg"
                   >
                     <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-black/40 dark:text-white/40 mx-auto mb-1 sm:mb-2" />
                     <div className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-black dark:text-white">
@@ -195,7 +218,7 @@ const About = () => {
             {/* Current Focus */}
             <motion.div
               variants={itemVariants}
-              className="p-5 sm:p-6 border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-xl"
+              className="p-5 sm:p-6 border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:border-black dark:hover:border-white transition-all rounded-xl"
             >
               <h4 className="text-xs sm:text-sm font-semibold text-black/50 dark:text-white/50 uppercase tracking-wider mb-3 flex items-center gap-2">
                 <Zap size={14} className="text-black/40 dark:text-white/40" />
@@ -230,8 +253,8 @@ const About = () => {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="w-56 h-56 xl:w-64 xl:h-64 mb-5 rounded-full overflow-hidden ring-4 ring-black/10 dark:ring-white/10"
             >
-              <img 
-                src={profileImage} 
+              <img
+                src={profileImage}
                 alt="Likith D"
                 className="w-full h-full object-cover"
               />
@@ -250,7 +273,7 @@ const About = () => {
               {techStack.map((tech) => (
                 <span
                   key={tech}
-                  className="px-4 py-1.5 text-sm rounded-full border border-black/20 dark:border-white/20 bg-white dark:bg-black text-black/60 dark:text-white/60"
+                  className="px-4 py-1.5 text-sm rounded-full border border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm text-black/60 dark:text-white/60"
                 >
                   {tech}
                 </span>
@@ -274,7 +297,7 @@ const About = () => {
                 key={feature.title}
                 variants={itemVariants}
                 whileHover={{ y: -4 }}
-                className="p-4 sm:p-5 md:p-6 text-center border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-xl"
+                className="p-4 sm:p-5 md:p-6 text-center border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:border-black dark:hover:border-white transition-all rounded-xl"
               >
                 <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 mx-auto mb-2 sm:mb-3 text-black/40 dark:text-white/40" />
                 <h4 className="text-xs sm:text-sm md:text-base font-semibold text-black dark:text-white mb-1">
@@ -288,6 +311,10 @@ const About = () => {
           })}
         </motion.div>
       </div>
+
+      {/* Gradient Fades - Kept for clean edges */}
+      <div className="absolute top-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-b from-white dark:from-black to-transparent pointer-events-none z-[5]" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-[5]" />
     </section>
   );
 };

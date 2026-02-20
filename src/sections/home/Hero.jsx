@@ -1,8 +1,7 @@
-// File: src/sections/home/Hero.jsx
 import React, { useState, useEffect, useRef } from "react";
+import useNetworkAnimation from "../../hooks/useNetworkAnimation";
 import {
   motion,
-  useMotionValue,
   useTransform,
   useScroll,
   AnimatePresence,
@@ -10,12 +9,10 @@ import {
 import {
   Sparkles,
   Code2,
-  Brain,
   Github,
   Linkedin,
   Mail,
   ChevronRight,
-  Cloud,
 } from "lucide-react";
 
 const Hero = ({ scrollTo }) => {
@@ -33,7 +30,7 @@ const Hero = ({ scrollTo }) => {
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
 
   const roles = [
-    { title: "Full Stack Developer", icon: Code2 },
+    { title: "Full Stack Developer" },
   ];
 
   useEffect(() => {
@@ -52,167 +49,15 @@ const Hero = ({ scrollTo }) => {
   const name = "Likith D";
 
   // Network animation with interconnected moving points
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    let animationFrameId;
-    let points = [];
-    const numPoints = 25;
-    const connectionDistance = 150;
-    let mouseX = -1000;
-    let mouseY = -1000;
-
-    // Handle mouse move for interactive effect
-    const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-    };
-
-    canvas.addEventListener('mousemove', handleMouseMove);
-
-    // Initialize points
-    const initPoints = () => {
-      points = [];
-      for (let i = 0; i < numPoints; i++) {
-        points.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          radius: 2 + Math.random() * 3,
-          originalRadius: 2 + Math.random() * 3,
-        });
-      }
-    };
-
-    // Resize handler
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      initPoints();
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    // Animation loop
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Update points
-      points.forEach(point => {
-        point.x += point.vx;
-        point.y += point.vy;
-
-        // Bounce off edges
-        if (point.x < 0 || point.x > canvas.width) {
-          point.vx *= -1;
-          point.x = Math.max(0, Math.min(canvas.width, point.x));
-        }
-        if (point.y < 0 || point.y > canvas.height) {
-          point.vy *= -1;
-          point.y = Math.max(0, Math.min(canvas.height, point.y));
-        }
-
-        // Mouse interaction
-        const dx = mouseX - point.x;
-        const dy = mouseY - point.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < 100) {
-          const angle = Math.atan2(dy, dx);
-          const force = (100 - distance) / 100 * 0.5;
-          point.x -= Math.cos(angle) * force;
-          point.y -= Math.sin(angle) * force;
-          point.radius = point.originalRadius * 1.5;
-        } else {
-          point.radius = point.originalRadius;
-        }
-      });
-
-      // Draw connections
-      ctx.strokeStyle = document.documentElement.classList.contains('dark') 
-        ? 'rgba(255, 255, 255, 0.15)'
-        : 'rgba(0, 0, 0, 0.12)';
-      ctx.lineWidth = 1;
-
-      for (let i = 0; i < points.length; i++) {
-        for (let j = i + 1; j < points.length; j++) {
-          const dx = points[i].x - points[j].x;
-          const dy = points[i].y - points[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < connectionDistance) {
-            // Calculate opacity based on distance
-            const opacity = (1 - distance / connectionDistance) * 0.8;
-            
-            ctx.beginPath();
-            ctx.moveTo(points[i].x, points[i].y);
-            ctx.lineTo(points[j].x, points[j].y);
-            
-            // Gradient stroke for moving effect
-            const gradient = ctx.createLinearGradient(
-              points[i].x, points[i].y, points[j].x, points[j].y
-            );
-            
-            if (document.documentElement.classList.contains('dark')) {
-              gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
-              gradient.addColorStop(1, `rgba(200, 200, 255, ${opacity})`);
-            } else {
-              gradient.addColorStop(0, `rgba(0, 0, 0, ${opacity})`);
-              gradient.addColorStop(1, `rgba(100, 100, 100, ${opacity})`);
-            }
-            
-            ctx.strokeStyle = gradient;
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw points
-      points.forEach(point => {
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
-        
-        // Glow effect
-        ctx.shadowColor = document.documentElement.classList.contains('dark') 
-          ? 'rgba(255, 255, 255, 0.5)'
-          : 'rgba(0, 0, 0, 0.3)';
-        ctx.shadowBlur = 8;
-        
-        ctx.fillStyle = document.documentElement.classList.contains('dark')
-          ? 'rgba(255, 255, 255, 0.7)'
-          : 'rgba(0, 0, 0, 0.6)';
-        ctx.fill();
-        
-        // Reset shadow
-        ctx.shadowBlur = 0;
-        
-        // Inner glow for some points
-        if (point.radius > 3) {
-          ctx.beginPath();
-          ctx.arc(point.x, point.y, point.radius * 0.4, 0, Math.PI * 2);
-          ctx.fillStyle = document.documentElement.classList.contains('dark')
-            ? 'rgba(255, 255, 255, 0.9)'
-            : 'rgba(0, 0, 0, 0.9)';
-          ctx.fill();
-        }
-      });
-
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
+  useNetworkAnimation(canvasRef, {
+    numPoints: 25,
+    velocity: 0.3,
+    radiusBase: 2,
+    radiusVar: 3,
+    opacityMult: 0.8,
+    strokeDark: 'rgba(255, 255, 255, 0.15)',
+    strokeLight: 'rgba(0, 0, 0, 0.12)',
+  });
 
   return (
     <section
@@ -228,7 +73,7 @@ const Hero = ({ scrollTo }) => {
       />
 
       {/* Subtle gradient overlays for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/30 dark:from-black/30 dark:via-transparent dark:to-black/30 pointer-events-none z-5" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/30 dark:from-black/30 dark:via-transparent dark:to-black/30 pointer-events-none z-[5]" />
 
       {/* Main Content */}
       <motion.div
@@ -371,9 +216,8 @@ const Hero = ({ scrollTo }) => {
       </motion.div>
 
       {/* Gradient Fades - Kept for clean edges */}
-      <div className="absolute top-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-b from-white dark:from-black to-transparent pointer-events-none z-5" />
-      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-5" />
-    </section>
+      <div className="absolute top-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-b from-white dark:from-black to-transparent pointer-events-none z-[5]" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-[5]" />    </section>
   );
 };
 

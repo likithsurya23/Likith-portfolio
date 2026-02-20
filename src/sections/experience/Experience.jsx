@@ -1,5 +1,5 @@
-// File: src/sections/experience/Experience.jsx
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
+import useNetworkAnimation from "../../hooks/useNetworkAnimation";
 import { motion, useInView } from "framer-motion";
 import {
   Briefcase,
@@ -21,6 +21,7 @@ import TimelineItem from "../../components/timeline/TimelineItem";
 
 const Experience = () => {
   const ref = useRef(null);
+  const canvasRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const experiences = [
@@ -83,6 +84,17 @@ const Experience = () => {
     { icon: Heart, value: "10+", label: "Projects" },
   ];
 
+  // Network animation with interconnected moving points
+  useNetworkAnimation(canvasRef, {
+    numPoints: 20,
+    velocity: 0.2,
+    radiusBase: 1.5,
+    radiusVar: 2.5,
+    opacityMult: 0.6,
+    strokeDark: 'rgba(255, 255, 255, 0.1)',
+    strokeLight: 'rgba(0, 0, 0, 0.08)',
+  });
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -112,8 +124,18 @@ const Experience = () => {
       id="experience"
       className="py-16 sm:py-20 md:py-24 lg:py-32 relative overflow-hidden bg-white dark:bg-black transition-colors duration-500"
     >
+      {/* Canvas for interconnected points animation - Same as Hero.jsx */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-auto z-0"
+        style={{ opacity: 0.6 }}
+      />
+
+      {/* Subtle gradient overlays for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/30 dark:from-black/30 dark:via-transparent dark:to-black/30 pointer-events-none z-[5]" />
+
       {/* Simple Border Decoration */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none z-[5]">
         <div className="absolute top-0 left-0 right-0 h-px bg-black/10 dark:bg-white/10" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 dark:bg-white/10" />
       </div>
@@ -148,7 +170,7 @@ const Experience = () => {
               key={stat.label}
               variants={itemVariants}
               whileHover={{ y: -4 }}
-              className="p-3 sm:p-4 md:p-5 lg:p-6 text-center border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-lg sm:rounded-xl"
+              className="p-3 sm:p-4 md:p-5 lg:p-6 text-center border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:border-black dark:hover:border-white transition-all rounded-lg sm:rounded-xl"
             >
               <stat.icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black/40 dark:text-white/40 mx-auto mb-1 sm:mb-2" />
               <div className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-black dark:text-white">
@@ -217,7 +239,7 @@ const Experience = () => {
               <motion.div
                 variants={itemVariants}
                 whileHover={{ y: -4 }}
-                className="p-5 sm:p-6 md:p-7 lg:p-8 border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-xl"
+                className="p-5 sm:p-6 md:p-7 lg:p-8 border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:border-black dark:hover:border-white transition-all rounded-xl"
               >
                 <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
                   <education.icon className="w-5 h-5 sm:w-6 sm:h-6 text-black/60 dark:text-white/60 flex-shrink-0" />
@@ -248,7 +270,7 @@ const Experience = () => {
             <motion.div
               variants={itemVariants}
               whileHover={{ y: -2 }}
-              className="p-5 sm:p-6 md:p-7 border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-xl"
+              className="p-5 sm:p-6 md:p-7 border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:border-black dark:hover:border-white transition-all rounded-xl"
             >
               <h4 className="text-xs sm:text-sm font-semibold text-black/50 dark:text-white/50 uppercase mb-3 sm:mb-4 flex items-center gap-2">
                 <Award size={14} className="text-black/40 dark:text-white/40" />
@@ -281,11 +303,15 @@ const Experience = () => {
               >
                 View all credentials
                 <ChevronRight size={10} className="sm:w-3 sm:h-3" />
-              </motion.button>            </motion.div>
+              </motion.button>
+            </motion.div>
           </motion.div>
         </div>
       </div>
-    </section>
+
+      {/* Gradient Fades - Kept for clean edges */}
+      <div className="absolute top-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-b from-white dark:from-black to-transparent pointer-events-none z-[5]" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-[5]" />    </section>
   );
 };
 

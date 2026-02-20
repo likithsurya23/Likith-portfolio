@@ -105,25 +105,22 @@ const TimelineItem = ({
                 transition={{ duration: 0.2 }}
               >
                 <p
-                  className={`text-xs sm:text-sm text-black/60 dark:text-white/60 leading-relaxed ${!isExpanded && "line-clamp-2 sm:line-clamp-3"
-                    }`}
+                  className={`text-xs sm:text-sm text-black/60 dark:text-white/60 leading-relaxed ${!isExpanded ? "line-clamp-2 sm:line-clamp-3" : ""}`}
                 >
                   {description}
-                </p>
-              </motion.div>
+                </p>              </motion.div>
             </AnimatePresence>
 
             {/* Skills */}
             <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-3 sm:mt-4">
-              {skills?.map((skill) => (
+              {skills?.map((skill, idx) => (
                 <span
-                  key={skill}
+                  key={`${skill}-${idx}`}
                   className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs rounded-full border border-black/20 dark:border-white/20 bg-white dark:bg-black text-black/50 dark:text-white/50 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white transition-all"
                 >
                   {skill}
                 </span>
-              ))}            </div>
-          </motion.div>
+              ))}            </div>          </motion.div>
         </div>
       </div>
     </motion.div>

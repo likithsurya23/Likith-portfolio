@@ -1,5 +1,5 @@
-// File: src/sections/skills/Skills.jsx
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import useNetworkAnimation from "../../hooks/useNetworkAnimation";
 import { motion, useInView } from "framer-motion";
 import {
   Code2,
@@ -23,6 +23,7 @@ import SkillCard from "../../components/ui/SkillCard";
 
 const Skills = () => {
   const ref = useRef(null);
+  const canvasRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [hoveredSkill, setHoveredSkill] = useState(null);
 
@@ -69,17 +70,37 @@ const Skills = () => {
     { icon: Rocket, value: "10+", label: "Projects" },
   ];
 
+  // Network animation with interconnected moving points
+  useNetworkAnimation(canvasRef, {
+    numPoints: 20,
+    velocity: 0.2,
+    radiusBase: 1.5,
+    radiusVar: 2.5,
+    opacityMult: 0.6,
+    strokeDark: 'rgba(255, 255, 255, 0.1)',
+    strokeLight: 'rgba(0, 0, 0, 0.08)',
+  });
+
   return (
     <section
       id="skills"
       className="py-20 md:py-32 relative overflow-hidden bg-white dark:bg-black transition-colors duration-500"
     >
+      {/* Canvas for interconnected points animation - Same as Hero.jsx */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-auto z-0"
+        style={{ opacity: 0.6 }}
+      />
+
+      {/* Subtle gradient overlays for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/30 dark:from-black/30 dark:via-transparent dark:to-black/30 pointer-events-none z-[5]" />
+
       {/* Simple Border Decoration - keeps the clean lines */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none z-[5]">
         <div className="absolute top-0 left-0 right-0 h-px bg-black/10 dark:bg-white/10" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 dark:bg-white/10" />
       </div>
-
       <div
         ref={ref}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
@@ -105,7 +126,7 @@ const Skills = () => {
             <motion.div
               key={stat.label}
               whileHover={{ y: -4 }}
-              className="p-4 md:p-6 text-center border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all"
+              className="p-4 md:p-6 text-center border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:border-black dark:hover:border-white transition-all"
             >
               <stat.icon className="w-4 h-4 md:w-6 md:h-6 text-black/40 dark:text-white/40 mx-auto mb-2 md:mb-3" />
               <div className="text-lg md:text-2xl font-bold text-black dark:text-white">
@@ -147,7 +168,7 @@ const Skills = () => {
               <motion.div
                 key={skill.label}
                 whileHover={{ scale: 1.05, y: -2 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all"
+                className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:border-black dark:hover:border-white transition-all"
               >
                 <skill.icon
                   size={14}
@@ -161,6 +182,10 @@ const Skills = () => {
           </div>
         </div>
       </div>
+
+      {/* Gradient Fades - Kept for clean edges */}
+      <div className="absolute top-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-b from-white dark:from-black to-transparent pointer-events-none z-[5]" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-[5]" />
     </section>
   );
 };

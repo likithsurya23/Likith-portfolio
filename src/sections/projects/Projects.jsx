@@ -1,5 +1,5 @@
-// File: src/sections/projects/Projects.jsx
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import useNetworkAnimation from "../../hooks/useNetworkAnimation";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Github,
@@ -23,6 +23,7 @@ import idsImage from "../../assets/ids.png";
 
 const Projects = () => {
   const ref = useRef(null);
+  const canvasRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const [filter, setFilter] = useState("all");
@@ -38,7 +39,7 @@ const Projects = () => {
       github: "https://github.com/likithsurya23/agriculture",
       demo: "https://agriculture---ai.vercel.app",
       featured: true,
-      image: agricultureImage, // Add image here
+      image: agricultureImage,
     },
     {
       title: "Image Inpainting Using GAN",
@@ -50,7 +51,7 @@ const Projects = () => {
         "https://github.com/likithsurya23/Image_Inpainting_Using_GAN",
       demo: "https://image-inpaint.vercel.app",
       featured: true,
-      image: ganImage, // Add image here
+      image: ganImage,
     },
     {
       title: "Hybrid CNN-ConvNeXt IDS",
@@ -62,21 +63,43 @@ const Projects = () => {
         "https://github.com/likithsurya23/Lightweight_Hybrid_CNN_And_ConvNeXt-Tiny_IDS_for_IoT_Networks",
       demo:
         "https://lightweight-hybrid-cnn-and-conv-ne.vercel.app",
-      image: idsImage, // Add image here
+      image: idsImage,
     },
   ];
+
   const filteredProjects =
     filter === "all"
       ? projects
       : projects.filter((p) => p.category === filter);
+
+  // Network animation with interconnected moving points
+  useNetworkAnimation(canvasRef, {
+    numPoints: 20,
+    velocity: 0.2,
+    radiusBase: 1.5,
+    radiusVar: 2.5,
+    opacityMult: 0.6,
+    strokeDark: 'rgba(255, 255, 255, 0.1)',
+    strokeLight: 'rgba(0, 0, 0, 0.08)',
+  });
 
   return (
     <section
       id="projects"
       className="py-20 sm:py-24 lg:py-32 relative overflow-hidden bg-white dark:bg-black transition-colors duration-500"
     >
+      {/* Canvas for interconnected points animation - Same as Hero.jsx */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-auto z-0"
+        style={{ opacity: 0.6 }}
+      />
+
+      {/* Subtle gradient overlays for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/30 dark:from-black/30 dark:via-transparent dark:to-black/30 pointer-events-none z-[5]" />
+
       {/* Simple Border Decoration */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none z-[5]">
         <div className="absolute top-0 left-0 right-0 h-px bg-black/10 dark:bg-white/10" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 dark:bg-white/10" />
       </div>
@@ -148,7 +171,7 @@ const Projects = () => {
                 github={project.github}
                 demo={project.demo}
                 featured={project.featured}
-                image={project.image}  // Pass the image prop
+                image={project.image}
                 index={index}
                 compact={viewMode === "compact"}
               />
@@ -163,7 +186,7 @@ const Projects = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-20"
           >
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black mb-4">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm mb-4">
               <Filter className="w-8 h-8 text-black/40 dark:text-white/40" />
             </div>
             <h3 className="text-xl font-medium text-black dark:text-white mb-2">No projects found</h3>
@@ -181,7 +204,7 @@ const Projects = () => {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="p-4 sm:p-6 text-center border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all hover:-translate-y-1"
+              className="p-4 sm:p-6 text-center border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:border-black dark:hover:border-white transition-all hover:-translate-y-1"
             >
               <stat.icon className="w-5 h-5 sm:w-6 sm:h-6 text-black/40 dark:text-white/40 mx-auto mb-2" />
               <div className="text-lg sm:text-2xl font-bold text-black dark:text-white">
@@ -205,7 +228,7 @@ const Projects = () => {
             href="https://github.com/likithsurya23"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black text-black dark:text-white hover:border-black dark:hover:border-white transition-all group"
+            className="inline-flex items-center gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm text-black dark:text-white hover:border-black dark:hover:border-white transition-all group"
           >
             <Github size={18} className="text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white" />
             <span className="text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white">View More on GitHub</span>
@@ -213,6 +236,10 @@ const Projects = () => {
           </a>
         </motion.div>
       </div>
+
+      {/* Gradient Fades - Kept for clean edges */}
+      <div className="absolute top-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-b from-white dark:from-black to-transparent pointer-events-none z-[5]" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-[5]" />
     </section>
   );
 };

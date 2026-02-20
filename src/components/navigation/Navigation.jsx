@@ -202,7 +202,7 @@ const Navigation = ({ activeSection, scrollTo }) => {
 
                 {/* Button content */}
                 <span className="relative z-10 flex items-center gap-2 text-white dark:text-black font-semibold text-sm">
-                  Let's Talk
+                  Let's Connect
                   <motion.span
                     animate={{ x: [0, 4, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}

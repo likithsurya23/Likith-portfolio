@@ -19,7 +19,7 @@ const ProjectCard = ({ title, description, tech, github, demo, featured, index, 
       className="group relative h-full"
     >
       {/* Card Container - Pure Black/White */}
-      <div className={`relative h-full bg-white dark:bg-black border-2 transition-all duration-300 overflow-hidden ${
+      <div className={`relative h-full bg-white/90 dark:bg-black/90 backdrop-blur-sm border-2 transition-all duration-300 overflow-hidden ${
         isHovered 
           ? 'border-black dark:border-white shadow-lg' 
           : 'border-black/20 dark:border-white/20'
@@ -153,7 +153,7 @@ const ProjectCard = ({ title, description, tech, github, demo, featured, index, 
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className="px-2 py-1 text-xs rounded-md border border-black/20 dark:border-white/20 bg-white dark:bg-black text-black dark:text-white"
+                className="px-2 py-1 text-xs rounded-md border border-black/20 dark:border-white/20 bg-white/90 dark:bg-black/90 backdrop-blur-sm text-black dark:text-white"
               >
                 {t}
               </motion.span>
