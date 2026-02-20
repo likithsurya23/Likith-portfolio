@@ -13,6 +13,9 @@ import {
 } from "lucide-react";
 import SectionHeading from "../../components/ui/SectionHeading";
 
+// Import your image (make sure to add your image to the public folder or src/assets)
+import profileImage from "../../assets/goku.jpeg"; // Adjust path as needed
+
 const About = () => {
   const features = [
     {
@@ -30,12 +33,14 @@ const About = () => {
     {
       icon: Rocket,
       title: "Performance",
-      description: "Optimizing applications for speed and efficiency",
+      description:
+        "Optimizing applications for speed and efficiency",
     },
     {
       icon: Target,
       title: "Problem Solver",
-      description: "Turning complex challenges into elegant solutions",
+      description:
+        "Turning complex challenges into elegant solutions",
     },
   ];
 
@@ -51,8 +56,6 @@ const About = () => {
     "Python",
     "Django",
     "AI/ML",
-    "Cloud",
-    "Node.js",
   ];
 
   // Animation variants for staggered children
@@ -97,7 +100,7 @@ const About = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-14 md:mb-16"
+          className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16"
         >
           <SectionHeading subtitle="Who I Am" align="center">
             <span className="flex items-center justify-center gap-2 md:gap-3">
@@ -107,10 +110,41 @@ const About = () => {
           </SectionHeading>
         </motion.div>
 
+        {/* Mobile: Avatar - Larger size (visible only on mobile) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="block lg:hidden mb-8 sm:mb-10"
+        >
+          <div className="flex flex-col items-center">
+            {/* Circular Image - Increased size for mobile */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 mb-4 sm:mb-5 rounded-full overflow-hidden ring-4 ring-black/10 dark:ring-white/10"
+            >
+              <img 
+                src={profileImage} 
+                alt="Likith D"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+
+            {/* Name and Title - Larger text */}
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black dark:text-white text-center">
+              Likith D
+            </h3>
+            <p className="text-base sm:text-lg md:text-xl text-black/60 dark:text-white/60 text-center">
+              Full Stack & AI Developer
+            </p>
+          </div>
+        </motion.div>
+
         {/* Main Grid */}
         <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-start">
-
-          {/* LEFT SIDE */}
+          {/* LEFT SIDE - Bio and Stats (shows below avatar on mobile, left on desktop) */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -130,19 +164,6 @@ const About = () => {
                   AI-powered solutions
                 </span>{" "}
                 and scalable applications.
-              </p>
-            </motion.div>
-
-            <motion.div
-              variants={itemVariants}
-              className="p-5 sm:p-6 md:p-8 border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-xl"
-            >
-              <p className="text-sm sm:text-base md:text-lg text-black/60 dark:text-white/60 leading-relaxed">
-                I specialize in{" "}
-                <span className="text-black dark:text-white font-medium">
-                  full-stack development
-                </span>{" "}
-                and production-ready ML systems.
               </p>
             </motion.div>
 
@@ -195,50 +216,46 @@ const About = () => {
             </motion.div>
           </motion.div>
 
-          {/* RIGHT SIDE CARD */}
+          {/* RIGHT SIDE - Desktop Avatar - Larger size (hidden on mobile) */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative mt-8 lg:mt-0"
+            className="relative hidden lg:flex lg:flex-col lg:items-center lg:justify-start"
           >
+            {/* Larger circular image for desktop */}
             <motion.div
-              whileHover={{ y: -4 }}
-              className="gradient-border rounded-2xl md:rounded-3xl"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="w-56 h-56 xl:w-64 xl:h-64 mb-5 rounded-full overflow-hidden ring-4 ring-black/10 dark:ring-white/10"
             >
-              <div className="p-6 sm:p-8 md:p-10 text-center border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black rounded-2xl md:rounded-3xl hover:border-black dark:hover:border-white transition-all">
-
-                {/* Avatar */}
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 mx-auto mb-4 sm:mb-5 md:mb-6 rounded-xl border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black flex items-center justify-center"
-                >
-                  <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white">
-                    LS
-                  </span>                </motion.div>
-
-                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-black dark:text-white mb-1 sm:mb-2">
-                  Likith Surya
-                </h3>
-
-                <p className="text-sm sm:text-base text-black/50 dark:text-white/50 mb-4 sm:mb-5 md:mb-6">
-                  Full Stack & AI Developer
-                </p>
-
-                {/* Tech Pills */}
-                <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
-                  {techStack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 sm:px-3 py-1 text-[8px] sm:text-[10px] md:text-xs rounded-full border border-black/20 dark:border-white/20 bg-white dark:bg-black text-black/60 dark:text-white/60"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <img 
+                src={profileImage} 
+                alt="Likith D"
+                className="w-full h-full object-cover"
+              />
             </motion.div>
+
+            {/* Name and Title - Larger text */}
+            <h3 className="text-3xl xl:text-4xl font-bold text-black dark:text-white text-center">
+              Likith D
+            </h3>
+            <p className="text-lg xl:text-xl text-black/60 dark:text-white/60 text-center mb-4">
+              Full Stack & AI Developer
+            </p>
+
+            {/* Tech Pills */}
+            <div className="flex flex-wrap justify-center gap-2 max-w-md">
+              {techStack.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-4 py-1.5 text-sm rounded-full border border-black/20 dark:border-white/20 bg-white dark:bg-black text-black/60 dark:text-white/60"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
           </motion.div>
         </div>
 
@@ -248,7 +265,7 @@ const About = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mt-12 sm:mt-14 md:mt-16 lg:mt-20"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mt-10 sm:mt-12 md:mt-14 lg:mt-16"
         >
           {features.map((feature, index) => {
             const Icon = feature.icon;

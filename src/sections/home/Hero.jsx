@@ -14,15 +14,14 @@ import {
   Github,
   Linkedin,
   Mail,
-  Rocket,
   ChevronRight,
   Cloud,
-  ArrowDown,
 } from "lucide-react";
 
 const Hero = ({ scrollTo }) => {
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const containerRef = useRef(null);
+  const canvasRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -35,8 +34,6 @@ const Hero = ({ scrollTo }) => {
 
   const roles = [
     { title: "Full Stack Developer", icon: Code2 },
-    { title: "Cloud Application Developer", icon: Cloud },
-    { title: "AI / ML Engineer", icon: Brain },
   ];
 
   useEffect(() => {
@@ -54,53 +51,167 @@ const Hero = ({ scrollTo }) => {
 
   const name = "Likith D";
 
-  // Black and white tech symbols for floating animation - ONLY THIS ANIMATION REMAINS
-  const techSymbols = [
-    { name: "React", symbol: "</>", size: 28 },
-    { name: "Python", symbol: "{ }", size: 32 },
-    { name: "JavaScript", symbol: "JS", size: 30 },
-    { name: "TypeScript", symbol: "TS", size: 30 },
-    { name: "Node.js", symbol: "◉", size: 36 },
-    { name: "Django", symbol: "⧩", size: 34 },
-    { name: "Docker", symbol: "🐳", size: 32 },
-    { name: "AWS", symbol: "☁️", size: 34 },
-    { name: "Git", symbol: "⎇", size: 30 },
-    { name: "MongoDB", symbol: "🍃", size: 32 },
-    { name: "PostgreSQL", symbol: "🐘", size: 32 },
-    { name: "Next.js", symbol: "▲", size: 28 },
-    { name: "Tailwind", symbol: "~", size: 36 },
-    { name: "HTML", symbol: "#", size: 32 },
-    { name: "CSS", symbol: "{}", size: 30 },
-    { name: "API", symbol: "↔", size: 34 },
-  ];
-
-  // Generate floating tech symbols
-  const [floatingSymbols, setFloatingSymbols] = useState([]);
-
+  // Network animation with interconnected moving points
   useEffect(() => {
-    // Initialize floating symbols
-    const numSymbols = window.innerWidth < 768 ? 15 : 30;
-    const newSymbols = [];
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    for (let i = 0; i < numSymbols; i++) {
-      const randomTech = techSymbols[Math.floor(Math.random() * techSymbols.length)];
-      newSymbols.push({
-        ...randomTech,
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: randomTech.size + (Math.random() * 20 - 10),
-        speed: 15 + Math.random() * 20,
-        delay: Math.random() * 5,
-        rotateSpeed: (Math.random() - 0.5) * 50,
-        floatX: 30 + Math.random() * 40,
-        floatY: 30 + Math.random() * 40,
-        direction: Math.random() > 0.5 ? 1 : -1,
-        opacity: 0.25 + Math.random() * 0.2,
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+    let points = [];
+    const numPoints = 25;
+    const connectionDistance = 150;
+    let mouseX = -1000;
+    let mouseY = -1000;
+
+    // Handle mouse move for interactive effect
+    const handleMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    };
+
+    canvas.addEventListener('mousemove', handleMouseMove);
+
+    // Initialize points
+    const initPoints = () => {
+      points = [];
+      for (let i = 0; i < numPoints; i++) {
+        points.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          radius: 2 + Math.random() * 3,
+          originalRadius: 2 + Math.random() * 3,
+        });
+      }
+    };
+
+    // Resize handler
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initPoints();
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    // Animation loop
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Update points
+      points.forEach(point => {
+        point.x += point.vx;
+        point.y += point.vy;
+
+        // Bounce off edges
+        if (point.x < 0 || point.x > canvas.width) {
+          point.vx *= -1;
+          point.x = Math.max(0, Math.min(canvas.width, point.x));
+        }
+        if (point.y < 0 || point.y > canvas.height) {
+          point.vy *= -1;
+          point.y = Math.max(0, Math.min(canvas.height, point.y));
+        }
+
+        // Mouse interaction
+        const dx = mouseX - point.x;
+        const dy = mouseY - point.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < 100) {
+          const angle = Math.atan2(dy, dx);
+          const force = (100 - distance) / 100 * 0.5;
+          point.x -= Math.cos(angle) * force;
+          point.y -= Math.sin(angle) * force;
+          point.radius = point.originalRadius * 1.5;
+        } else {
+          point.radius = point.originalRadius;
+        }
       });
-    }
 
-    setFloatingSymbols(newSymbols);
+      // Draw connections
+      ctx.strokeStyle = document.documentElement.classList.contains('dark') 
+        ? 'rgba(255, 255, 255, 0.15)'
+        : 'rgba(0, 0, 0, 0.12)';
+      ctx.lineWidth = 1;
+
+      for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
+          const dx = points[i].x - points[j].x;
+          const dy = points[i].y - points[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < connectionDistance) {
+            // Calculate opacity based on distance
+            const opacity = (1 - distance / connectionDistance) * 0.8;
+            
+            ctx.beginPath();
+            ctx.moveTo(points[i].x, points[i].y);
+            ctx.lineTo(points[j].x, points[j].y);
+            
+            // Gradient stroke for moving effect
+            const gradient = ctx.createLinearGradient(
+              points[i].x, points[i].y, points[j].x, points[j].y
+            );
+            
+            if (document.documentElement.classList.contains('dark')) {
+              gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
+              gradient.addColorStop(1, `rgba(200, 200, 255, ${opacity})`);
+            } else {
+              gradient.addColorStop(0, `rgba(0, 0, 0, ${opacity})`);
+              gradient.addColorStop(1, `rgba(100, 100, 100, ${opacity})`);
+            }
+            
+            ctx.strokeStyle = gradient;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw points
+      points.forEach(point => {
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+        
+        // Glow effect
+        ctx.shadowColor = document.documentElement.classList.contains('dark') 
+          ? 'rgba(255, 255, 255, 0.5)'
+          : 'rgba(0, 0, 0, 0.3)';
+        ctx.shadowBlur = 8;
+        
+        ctx.fillStyle = document.documentElement.classList.contains('dark')
+          ? 'rgba(255, 255, 255, 0.7)'
+          : 'rgba(0, 0, 0, 0.6)';
+        ctx.fill();
+        
+        // Reset shadow
+        ctx.shadowBlur = 0;
+        
+        // Inner glow for some points
+        if (point.radius > 3) {
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, point.radius * 0.4, 0, Math.PI * 2);
+          ctx.fillStyle = document.documentElement.classList.contains('dark')
+            ? 'rgba(255, 255, 255, 0.9)'
+            : 'rgba(0, 0, 0, 0.9)';
+          ctx.fill();
+        }
+      });
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      canvas.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
   return (
@@ -109,69 +220,15 @@ const Hero = ({ scrollTo }) => {
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-black transition-colors duration-500 px-4 sm:px-6"
     >
-      {/* ONLY TECH SYMBOLS ANIMATION - All other background animations removed */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {floatingSymbols.map((symbol) => (
-          <motion.div
-            key={symbol.id}
-            className="absolute font-mono font-bold"
-            style={{
-              left: `${symbol.x}%`,
-              top: `${symbol.y}%`,
-              fontSize: `${symbol.size}px`,
-              zIndex: 0,
-              color: document.documentElement.classList.contains('dark')
-                ? 'rgba(255, 255, 255, 0.35)'
-                : 'rgba(0, 0, 0, 0.3)',
-              textShadow: document.documentElement.classList.contains('dark')
-                ? '0 0 20px rgba(255, 255, 255, 0.4)'
-                : '0 0 20px rgba(0, 0, 0, 0.3)',
-            }}
-            animate={{
-              x: [
-                0,
-                symbol.floatX * symbol.direction,
-                -symbol.floatX * 0.5,
-                0,
-              ],
-              y: [
-                0,
-                -symbol.floatY,
-                symbol.floatY * 0.7,
-                0,
-              ],
-              rotate: [0, symbol.rotateSpeed, -symbol.rotateSpeed * 0.5, 0],
-              scale: [1, 1.4, 0.9, 1],
-              opacity: [
-                symbol.opacity,
-                symbol.opacity * 1.8,
-                symbol.opacity * 0.9,
-                symbol.opacity,
-              ],
-            }}
-            transition={{
-              duration: symbol.speed,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: symbol.delay,
-            }}
-            whileHover={{
-              scale: 2.2,
-              opacity: 1,
-              transition: { duration: 0.3 },
-              zIndex: 20,
-            }}
-          >
-            <span className="relative block transform-gpu font-bold">
-              {symbol.symbol}
-            </span>
-          </motion.div>
-        ))}
-      </div>
+      {/* Canvas for interconnected points animation */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-auto z-0"
+        style={{ opacity: 0.8 }}
+      />
 
-      {/* REMOVED: Connection lines SVG */}
-      {/* REMOVED: Animated particles */}
-      {/* REMOVED: Gradient overlays for depth */}
+      {/* Subtle gradient overlays for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/30 dark:from-black/30 dark:via-transparent dark:to-black/30 pointer-events-none z-5" />
 
       {/* Main Content */}
       <motion.div
@@ -197,7 +254,7 @@ const Hero = ({ scrollTo }) => {
           </div>
         </motion.div>
 
-        {/* Name with Letter Animation - FIXED SPACING */}
+        {/* Name with Letter Animation */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

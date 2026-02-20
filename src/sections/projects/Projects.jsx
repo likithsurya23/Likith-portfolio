@@ -16,6 +16,11 @@ import {
 import SectionHeading from "../../components/ui/SectionHeading";
 import ProjectCard from "../../components/cards/ProjectCard";
 
+// Import project images
+import agricultureImage from "../../assets/agri.png";
+import ganImage from "../../assets/inpaint.png";
+import idsImage from "../../assets/ids.png";
+
 const Projects = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -33,6 +38,7 @@ const Projects = () => {
       github: "https://github.com/likithsurya23/agriculture",
       demo: "https://agriculture---ai.vercel.app",
       featured: true,
+      image: agricultureImage, // Add image here
     },
     {
       title: "Image Inpainting Using GAN",
@@ -44,6 +50,7 @@ const Projects = () => {
         "https://github.com/likithsurya23/Image_Inpainting_Using_GAN",
       demo: "https://image-inpaint.vercel.app",
       featured: true,
+      image: ganImage, // Add image here
     },
     {
       title: "Hybrid CNN-ConvNeXt IDS",
@@ -55,13 +62,8 @@ const Projects = () => {
         "https://github.com/likithsurya23/Lightweight_Hybrid_CNN_And_ConvNeXt-Tiny_IDS_for_IoT_Networks",
       demo:
         "https://lightweight-hybrid-cnn-and-conv-ne.vercel.app",
+      image: idsImage, // Add image here
     },
-  ];
-
-  const filters = [
-    { key: "all", label: "All", icon: LayoutGrid },
-    { key: "ai", label: "AI/ML", icon: Brain },
-    { key: "web", label: "Web", icon: Globe },
   ];
   const filteredProjects =
     filter === "all"
@@ -99,28 +101,6 @@ const Projects = () => {
 
         {/* Controls */}
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-10 mb-12">
-          {/* Filters */}
-          <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto">
-            {filters.map((f) => {
-              const Icon = f.icon;
-              const active = filter === f.key;
-              return (
-                <button
-                  key={f.key}
-                  onClick={() => setFilter(f.key)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm whitespace-nowrap transition-all border-2 flex-shrink-0
-                    ${active
-                      ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
-                      : "bg-white dark:bg-black text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white"
-                    }`}
-                >
-                  <Icon size={16} />
-                  {f.label}
-                </button>
-              );
-            })}
-          </div>
-
           {/* View Mode */}
           <div className="flex gap-2">
             <button
@@ -162,7 +142,13 @@ const Projects = () => {
             {filteredProjects.map((project, index) => (
               <ProjectCard
                 key={project.title}
-                {...project}
+                title={project.title}
+                description={project.description}
+                tech={project.tech}
+                github={project.github}
+                demo={project.demo}
+                featured={project.featured}
+                image={project.image}  // Pass the image prop
                 index={index}
                 compact={viewMode === "compact"}
               />

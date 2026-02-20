@@ -51,7 +51,6 @@ const Navigation = ({ activeSection, scrollTo }) => {
     { id: 'skills', label: 'Skills' },
     { id: 'projects', label: 'Projects' },
     { id: 'experience', label: 'Experience' },
-    { id: 'contact', label: 'Contact' },
   ];
 
   // Simplified button animation for better performance

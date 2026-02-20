@@ -1,10 +1,11 @@
 // File: src/components/cards/ProjectCard.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, ExternalLink, Star, Code2, Sparkles, ChevronRight } from 'lucide-react';
+import { Github, ExternalLink, Star, Sparkles, ChevronRight } from 'lucide-react';
 
-const ProjectCard = ({ title, description, tech, github, demo, featured, index, compact = false }) => {
+const ProjectCard = ({ title, description, tech, github, demo, featured, index, compact = false, image }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   return (
     <motion.div
@@ -39,43 +40,65 @@ const ProjectCard = ({ title, description, tech, github, demo, featured, index, 
           </motion.div>
         )}
 
-        {/* Card Header Area */}
-        <div className="relative h-40 overflow-hidden border-b-2 border-black/20 dark:border-white/20 bg-white dark:bg-black">
-          {/* Project Icon */}
+        {/* Card Header Area - Project Image */}
+        <div className="relative h-48 overflow-hidden bg-white dark:bg-black">
+          {/* Project Image */}
           <motion.div
-            className="absolute inset-0 flex items-center justify-center"
+            className="absolute inset-0"
             animate={{ 
               scale: isHovered ? 1.1 : 1,
             }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.5 }}
           >
-            <div className="relative">
-              <div className="w-16 h-16 rounded-xl bg-white dark:bg-black border-2 border-black dark:border-white flex items-center justify-center">
-                <Code2 size={32} className="text-black dark:text-white" />
+            {image && !imageError ? (
+              <img 
+                src={image} 
+                alt={title}
+                className="w-full h-full object-cover"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              // Fallback gradient pattern when no image or error
+              <div className="w-full h-full bg-gradient-to-br from-black/5 to-black/20 dark:from-white/5 dark:to-white/20">
+                <div className="w-full h-full grid grid-cols-3 gap-0.5 p-2 opacity-30">
+                  {[...Array(9)].map((_, i) => (
+                    <div key={i} className="border border-black/10 dark:border-white/10" />
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </motion.div>
+
+          {/* Dark Overlay on Hover */}
+          <motion.div
+            className="absolute inset-0 bg-black/60 dark:bg-white/60 backdrop-blur-[2px]"
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: isHovered ? 1 : 0,
+            }}
+            transition={{ duration: 0.2 }}
+          />
 
           {/* Hover Overlay with Actions */}
           <motion.div
-            className="absolute inset-0 bg-white dark:bg-black flex items-end justify-between p-4"
+            className="absolute inset-0 flex items-center justify-center gap-3 p-4"
             initial={{ opacity: 0 }}
             animate={{ 
               opacity: isHovered ? 1 : 0,
             }}
             transition={{ duration: 0.2 }}
           >
-            <div className="flex gap-2 w-full">
+            <div className="flex gap-3 w-full max-w-[200px]">
               {github && (
                 <motion.a
                   href={github}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white text-xs font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border-2 border-white bg-transparent text-white text-sm font-medium hover:bg-white hover:text-black transition-all"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <Github size={14} /> 
+                  <Github size={16} /> 
                   <span>Code</span>
                 </motion.a>
               )}
@@ -84,16 +107,19 @@ const ProjectCard = ({ title, description, tech, github, demo, featured, index, 
                   href={demo}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-black dark:bg-white text-white dark:text-black text-xs font-medium hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white transition-all border-2 border-black dark:border-white"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-white text-black text-sm font-medium hover:bg-transparent hover:text-white transition-all border-2 border-white"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <ExternalLink size={14} /> 
+                  <ExternalLink size={16} /> 
                   <span>Demo</span>
                 </motion.a>
               )}
             </div>
           </motion.div>
+
+          {/* Gradient Overlay at Bottom */}
+          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/50 to-transparent" />
         </div>
 
         {/* Content Area */}
