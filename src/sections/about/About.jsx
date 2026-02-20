@@ -69,10 +69,10 @@ const About = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.5,
         ease: [0.16, 1, 0.3, 1]
       }
@@ -109,7 +109,7 @@ const About = () => {
 
         {/* Main Grid */}
         <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-start">
-          
+
           {/* LEFT SIDE */}
           <motion.div
             variants={containerVariants}
@@ -119,7 +119,7 @@ const About = () => {
             className="space-y-5 sm:space-y-6 md:space-y-8"
           >
             {/* Bio Cards */}
-            <motion.div 
+            <motion.div
               variants={itemVariants}
               className="p-5 sm:p-6 md:p-8 border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-xl"
             >
@@ -133,7 +133,7 @@ const About = () => {
               </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               variants={itemVariants}
               className="p-5 sm:p-6 md:p-8 border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-xl"
             >
@@ -147,7 +147,7 @@ const About = () => {
             </motion.div>
 
             {/* Stats */}
-            <motion.div 
+            <motion.div
               variants={itemVariants}
               className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 md:gap-4"
             >
@@ -172,7 +172,7 @@ const About = () => {
             </motion.div>
 
             {/* Current Focus */}
-            <motion.div 
+            <motion.div
               variants={itemVariants}
               className="p-5 sm:p-6 border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all rounded-xl"
             >
@@ -208,16 +208,15 @@ const About = () => {
               className="gradient-border rounded-2xl md:rounded-3xl"
             >
               <div className="p-6 sm:p-8 md:p-10 text-center border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black rounded-2xl md:rounded-3xl hover:border-black dark:hover:border-white transition-all">
-                
+
                 {/* Avatar */}
-                <motion.div 
+                <motion.div
                   whileHover={{ scale: 1.05 }}
                   className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 mx-auto mb-4 sm:mb-5 md:mb-6 rounded-xl border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black flex items-center justify-center"
                 >
                   <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white">
-                    LD
-                  </span>
-                </motion.div>
+                    LS
+                  </span>                </motion.div>
 
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-black dark:text-white mb-1 sm:mb-2">
                   Likith Surya

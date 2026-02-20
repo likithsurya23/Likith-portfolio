@@ -39,7 +39,7 @@ const Projects = () => {
       description:
         "Deep learning-based image restoration system using GAN.",
       tech: ["PyTorch", "GAN", "React", "Django REST"],
-      category: "ml",
+      category: "ai",
       github:
         "https://github.com/likithsurya23/Image_Inpainting_Using_GAN",
       demo: "https://image-inpaint.vercel.app",
@@ -50,7 +50,7 @@ const Projects = () => {
       description:
         "Optimized edge-based intrusion detection system for IoT networks.",
       tech: ["PyTorch", "Django", "IoT", "Edge AI"],
-      category: "ml",
+      category: "ai",
       github:
         "https://github.com/likithsurya23/Lightweight_Hybrid_CNN_And_ConvNeXt-Tiny_IDS_for_IoT_Networks",
       demo:
@@ -63,7 +63,6 @@ const Projects = () => {
     { key: "ai", label: "AI/ML", icon: Brain },
     { key: "web", label: "Web", icon: Globe },
   ];
-
   const filteredProjects =
     filter === "all"
       ? projects
@@ -110,10 +109,9 @@ const Projects = () => {
                   key={f.key}
                   onClick={() => setFilter(f.key)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm whitespace-nowrap transition-all border-2 flex-shrink-0
-                    ${
-                      active
-                        ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
-                        : "bg-white dark:bg-black text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white"
+                    ${active
+                      ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
+                      : "bg-white dark:bg-black text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white"
                     }`}
                 >
                   <Icon size={16} />
@@ -127,21 +125,21 @@ const Projects = () => {
           <div className="flex gap-2">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-2 rounded-lg border-2 transition-all ${
-                viewMode === "grid"
-                  ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
-                  : "bg-white dark:bg-black text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white"
-              }`}
+              aria-label="Grid view"
+              className={`p-2 rounded-lg border-2 transition-all ${viewMode === "grid"
+                ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
+                : "bg-white dark:bg-black text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white"
+                }`}
             >
               <LayoutGrid size={18} />
             </button>
             <button
               onClick={() => setViewMode("compact")}
-              className={`p-2 rounded-lg border-2 transition-all ${
-                viewMode === "compact"
-                  ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
-                  : "bg-white dark:bg-black text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white"
-              }`}
+              aria-label="Compact view"
+              className={`p-2 rounded-lg border-2 transition-all ${viewMode === "compact"
+                ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
+                : "bg-white dark:bg-black text-black dark:text-white border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white"
+                }`}
             >
               <Grid3x3 size={18} />
             </button>
@@ -156,11 +154,10 @@ const Projects = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className={`grid grid-cols-1 ${
-              viewMode === "grid"
-                ? "sm:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8"
-                : "sm:grid-cols-2 lg:grid-cols-3 gap-5"
-            }`}
+            className={`grid grid-cols-1 ${viewMode === "grid"
+              ? "sm:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8"
+              : "sm:grid-cols-2 lg:grid-cols-3 gap-5"
+              }`}
           >
             {filteredProjects.map((project, index) => (
               <ProjectCard

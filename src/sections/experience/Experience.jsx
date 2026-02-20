@@ -97,10 +97,10 @@ const Experience = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.5,
         ease: [0.16, 1, 0.3, 1]
       }
@@ -170,7 +170,7 @@ const Experience = () => {
             animate={isInView ? "visible" : "hidden"}
             className="lg:col-span-3"
           >
-            <motion.div 
+            <motion.div
               variants={itemVariants}
               className="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8"
             >
@@ -203,7 +203,7 @@ const Experience = () => {
           >
             {/* Education Card */}
             <div>
-              <motion.div 
+              <motion.div
                 variants={itemVariants}
                 className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5 md:mb-6"
               >
@@ -276,12 +276,12 @@ const Experience = () => {
 
               <motion.button
                 whileHover={{ x: 4 }}
+                onClick={() => { /* TODO: Implement credentials view */ }}
                 className="mt-3 sm:mt-4 text-[10px] sm:text-xs text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition flex items-center gap-1"
               >
                 View all credentials
                 <ChevronRight size={10} className="sm:w-3 sm:h-3" />
-              </motion.button>
-            </motion.div>
+              </motion.button>            </motion.div>
           </motion.div>
         </div>
       </div>

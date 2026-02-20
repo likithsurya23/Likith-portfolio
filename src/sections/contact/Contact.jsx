@@ -48,23 +48,22 @@ const Contact = () => {
     {
       icon: Mail,
       label: "Email",
-      value: "",
+      value: "likithsurya231@gmail.com",
       href: "mailto:likithsurya231@gmail.com",
     },
     {
       icon: Github,
       label: "GitHub",
-      value: "",
+      value: "likithsurya23",
       href: "https://github.com/likithsurya23",
     },
     {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "",
+      value: "likith--d",
       href: "https://linkedin.com/in/likith--d",
     },
   ];
-
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -79,10 +78,10 @@ const Contact = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.5,
         ease: [0.16, 1, 0.3, 1]
       }
@@ -200,60 +199,60 @@ const Contact = () => {
                     <input
                       type={field === "email" ? "email" : "text"}
                       name={field}
+                      id={field}
                       value={formData[field]}
                       onChange={handleChange}
                       onFocus={() => setFocused(field)}
                       onBlur={() => setFocused(null)}
                       required
+                      aria-label={field === "name" ? "Your Name" : "Your Email"}
                       className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white dark:bg-black border-2 border-black/20 dark:border-white/20 rounded-lg sm:rounded-xl text-black dark:text-white focus:border-black dark:focus:border-white outline-none transition-all text-sm sm:text-base"
                     />
                     <label
-                      className={`absolute left-3 sm:left-4 transition-all pointer-events-none ${
-                        formData[field] || focused === field
-                          ? "-top-2 sm:-top-2.5 text-[10px] sm:text-xs bg-white dark:bg-black px-1 text-black/60 dark:text-white/60"
-                          : "top-3 sm:top-4 text-xs sm:text-sm text-black/40 dark:text-white/40"
-                      }`}
+                      htmlFor={field}
+                      className={`absolute left-3 sm:left-4 transition-all pointer-events-none ${formData[field] || focused === field
+                        ? "-top-2 sm:-top-2.5 text-[10px] sm:text-xs bg-white dark:bg-black px-1 text-black/60 dark:text-white/60"
+                        : "top-3 sm:top-4 text-xs sm:text-sm text-black/40 dark:text-white/40"
+                        }`}
                     >
                       {field === "name" ? "Your Name" : "Your Email"}
                     </label>
                   </div>
-                ))}
-              </div>
+                ))}              </div>
 
               {/* Message */}
               <div className="relative mb-5 sm:mb-6">
                 <textarea
                   name="message"
+                  id="message"
                   rows={5}
                   value={formData.message}
                   onChange={handleChange}
                   onFocus={() => setFocused("message")}
                   onBlur={() => setFocused(null)}
                   required
+                  aria-label="Your Message"
                   className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white dark:bg-black border-2 border-black/20 dark:border-white/20 rounded-lg sm:rounded-xl text-black dark:text-white focus:border-black dark:focus:border-white outline-none transition-all resize-none text-sm sm:text-base"
                 />
                 <label
-                  className={`absolute left-3 sm:left-4 transition-all pointer-events-none ${
-                    formData.message || focused === "message"
+                  htmlFor="message"
+                  className={`absolute left-3 sm:left-4 transition-all pointer-events-none ${formData.message || focused === "message"
                       ? "-top-2 sm:-top-2.5 text-[10px] sm:text-xs bg-white dark:bg-black px-1 text-black/60 dark:text-white/60"
                       : "top-3 sm:top-4 text-xs sm:text-sm text-black/40 dark:text-white/40"
-                  }`}
+                    }`}
                 >
                   Your Message
                 </label>
-              </div>
-
-              {/* Button */}
+              </div>              {/* Button */}
               <motion.button
                 type="submit"
                 disabled={isSubmitting || isSubmitted}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`w-full py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base flex items-center justify-center gap-2 transition-all border-2 ${
-                  isSubmitted
-                    ? "border-black/20 dark:border-white/20 bg-white dark:bg-black text-black/60 dark:text-white/60"
-                    : "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white"
-                }`}
+                className={`w-full py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base flex items-center justify-center gap-2 transition-all border-2 ${isSubmitted
+                  ? "border-black/20 dark:border-white/20 bg-white dark:bg-black text-black/60 dark:text-white/60"
+                  : "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white"
+                  }`}
               >
                 {isSubmitting ? (
                   <div className="flex items-center gap-2">

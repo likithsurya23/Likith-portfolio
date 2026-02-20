@@ -9,7 +9,7 @@ const SectionHeading = ({ children, subtitle, align = 'center' }) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
@@ -26,13 +26,12 @@ const SectionHeading = ({ children, subtitle, align = 'center' }) => {
         <span className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white animate-pulse" />
         <span className="text-xs font-medium text-black/60 dark:text-white/60 uppercase tracking-widest">{subtitle}</span>
       </motion.div>
-      
+
       <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black dark:text-white mb-6 tracking-tight">
         {children}
       </h2>
-      
-      <div className={`h-px w-24 bg-gradient-to-r from-black/40 to-transparent dark:from-white/40 dark:to-transparent ${align === 'center' ? 'mx-auto' : ''}`} />
-    </motion.div>
+
+      <div className={`h-px w-24 bg-gradient-to-r from-black/40 to-transparent dark:from-white/40 dark:to-transparent ${align === 'center' ? 'mx-auto' : align === 'right' ? 'ml-auto' : ''}`} />    </motion.div>
   );
 };
 

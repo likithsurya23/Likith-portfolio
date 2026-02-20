@@ -83,6 +83,8 @@ const TimelineItem = ({
               <motion.button
                 onClick={() => setIsExpanded(!isExpanded)}
                 whileTap={{ scale: 0.95 }}
+                aria-expanded={isExpanded}
+                aria-label={isExpanded ? "Collapse description" : "Expand description"}
                 className="self-start sm:self-auto p-1.5 sm:p-2 rounded-lg border border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-colors"
               >
                 <motion.div
@@ -91,8 +93,7 @@ const TimelineItem = ({
                 >
                   <ChevronRight size={14} className="sm:w-4 sm:h-4 text-black/40 dark:text-white/40" />
                 </motion.div>
-              </motion.button>
-            </div>
+              </motion.button>            </div>
 
             {/* Description (smooth expand) */}
             <AnimatePresence initial={false}>
@@ -104,9 +105,8 @@ const TimelineItem = ({
                 transition={{ duration: 0.2 }}
               >
                 <p
-                  className={`text-xs sm:text-sm text-black/60 dark:text-white/60 leading-relaxed ${
-                    !isExpanded && "line-clamp-2 sm:line-clamp-3"
-                  }`}
+                  className={`text-xs sm:text-sm text-black/60 dark:text-white/60 leading-relaxed ${!isExpanded && "line-clamp-2 sm:line-clamp-3"
+                    }`}
                 >
                   {description}
                 </p>
@@ -115,15 +115,14 @@ const TimelineItem = ({
 
             {/* Skills */}
             <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-3 sm:mt-4">
-              {skills.map((skill) => (
+              {skills?.map((skill) => (
                 <span
                   key={skill}
                   className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs rounded-full border border-black/20 dark:border-white/20 bg-white dark:bg-black text-black/50 dark:text-white/50 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white transition-all"
                 >
                   {skill}
                 </span>
-              ))}
-            </div>
+              ))}            </div>
           </motion.div>
         </div>
       </div>

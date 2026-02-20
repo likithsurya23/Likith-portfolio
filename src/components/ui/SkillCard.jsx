@@ -3,14 +3,13 @@ import { motion } from 'framer-motion';
 
 const SkillCard = ({ icon: Icon, title, skills, level, isHovered }) => {
   return (
-    <div className={`h-full p-6 border-2 transition-all duration-300 rounded-xl bg-white dark:bg-black ${isHovered
-        ? 'border-black dark:border-white shadow-lg -translate-y-1'
-        : 'border-black/20 dark:border-white/20'
-      }`}>
-      <div className="flex items-center gap-4 mb-6">
+    <div className={`relative h-full p-6 border-2 transition-all duration-300 rounded-xl bg-white dark:bg-black ${isHovered
+      ? 'border-black dark:border-white shadow-lg -translate-y-1'
+      : 'border-black/20 dark:border-white/20'
+      }`}>      <div className="flex items-center gap-4 mb-6">
         <div className={`p-3 rounded-lg border-2 transition-colors duration-300 ${isHovered
-            ? 'bg-black text-white dark:bg-white dark:text-black border-black dark:border-white'
-            : 'bg-transparent text-black/40 dark:text-white/40 border-black/20 dark:border-white/20'
+          ? 'bg-black text-white dark:bg-white dark:text-black border-black dark:border-white'
+          : 'bg-transparent text-black/40 dark:text-white/40 border-black/20 dark:border-white/20'
           }`}>
           <Icon size={24} />
         </div>

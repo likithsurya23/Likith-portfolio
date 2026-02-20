@@ -54,7 +54,7 @@ const Hero = ({ scrollTo }) => {
 
   const name = "Likith D";
 
-  // Black and white tech symbols for floating animation
+  // Black and white tech symbols for floating animation - ONLY THIS ANIMATION REMAINS
   const techSymbols = [
     { name: "React", symbol: "</>", size: 28 },
     { name: "Python", symbol: "{ }", size: 32 },
@@ -62,8 +62,6 @@ const Hero = ({ scrollTo }) => {
     { name: "TypeScript", symbol: "TS", size: 30 },
     { name: "Node.js", symbol: "◉", size: 36 },
     { name: "Django", symbol: "⧩", size: 34 },
-    { name: "PyTorch", symbol: "🔥", size: 32 },
-    { name: "TensorFlow", symbol: "⚡", size: 32 },
     { name: "Docker", symbol: "🐳", size: 32 },
     { name: "AWS", symbol: "☁️", size: 34 },
     { name: "Git", symbol: "⎇", size: 30 },
@@ -98,7 +96,7 @@ const Hero = ({ scrollTo }) => {
         floatX: 30 + Math.random() * 40,
         floatY: 30 + Math.random() * 40,
         direction: Math.random() > 0.5 ? 1 : -1,
-        opacity: 0.25 + Math.random() * 0.2, // Increased opacity for better visibility
+        opacity: 0.25 + Math.random() * 0.2,
       });
     }
 
@@ -111,7 +109,7 @@ const Hero = ({ scrollTo }) => {
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-black transition-colors duration-500 px-4 sm:px-6"
     >
-      {/* Floating Tech Symbols Background - Pure Black/White with better visibility */}
+      {/* ONLY TECH SYMBOLS ANIMATION - All other background animations removed */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {floatingSymbols.map((symbol) => (
           <motion.div
@@ -123,12 +121,11 @@ const Hero = ({ scrollTo }) => {
               fontSize: `${symbol.size}px`,
               zIndex: 0,
               color: document.documentElement.classList.contains('dark')
-                ? 'rgba(255, 255, 255, 0.35)' // Brighter in dark mode
-                : 'rgba(0, 0, 0, 0.3)', // Darker in light mode
+                ? 'rgba(255, 255, 255, 0.35)'
+                : 'rgba(0, 0, 0, 0.3)',
               textShadow: document.documentElement.classList.contains('dark')
                 ? '0 0 20px rgba(255, 255, 255, 0.4)'
                 : '0 0 20px rgba(0, 0, 0, 0.3)',
-              filter: 'blur(0.5px)',
             }}
             animate={{
               x: [
@@ -172,154 +169,9 @@ const Hero = ({ scrollTo }) => {
         ))}
       </div>
 
-      {/* Connection Lines between symbols - Neural Network Style */}
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none z-0"
-        preserveAspectRatio="xMidYMid slice"
-        viewBox="0 0 100 100"
-      >
-        <defs>
-          <linearGradient id="line-gradient-light" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="transparent" />
-            <stop offset="50%" stopColor="#000" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="transparent" />
-          </linearGradient>
-          <linearGradient id="line-gradient-dark" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="transparent" />
-            <stop offset="50%" stopColor="#fff" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="transparent" />
-          </linearGradient>
-        </defs>
-
-        {/* Connection Lines - Light Mode */}
-        <g className="dark:hidden">
-          {floatingSymbols.map((symbol, i) =>
-            floatingSymbols.slice(i + 1).map((otherSymbol, j) => {
-              const dx = symbol.x - otherSymbol.x;
-              const dy = symbol.y - otherSymbol.y;
-              const distance = Math.sqrt(dx * dx + dy * dy);
-
-              if (distance < 30) {
-                const opacity = Math.max(0, 0.2 * (1 - distance / 30));
-                return (
-                  <motion.line
-                    key={`line-${i}-${j}`}
-                    x1={`${symbol.x}%`}
-                    y1={`${symbol.y}%`}
-                    x2={`${otherSymbol.x}%`}
-                    y2={`${otherSymbol.y}%`}
-                    stroke="url(#line-gradient-light)"
-                    strokeWidth="1.2"
-                    strokeDasharray="4 4"
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity: opacity,
-                      strokeDashoffset: [0, 8, 0],
-                    }}
-                    transition={{
-                      opacity: { duration: 0.5 },
-                      strokeDashoffset: {
-                        duration: 6,
-                        repeat: Infinity,
-                        ease: "linear",
-                      },
-                    }}
-                  />
-                );
-              }
-              return null;
-            })
-          )}
-        </g>
-
-        {/* Connection Lines - Dark Mode */}
-        <g className="hidden dark:block">
-          {floatingSymbols.map((symbol, i) =>
-            floatingSymbols.slice(i + 1).map((otherSymbol, j) => {
-              const dx = symbol.x - otherSymbol.x;
-              const dy = symbol.y - otherSymbol.y;
-              const distance = Math.sqrt(dx * dx + dy * dy);
-
-              if (distance < 30) {
-                const opacity = Math.max(0, 0.2 * (1 - distance / 30));
-                return (
-                  <motion.line
-                    key={`line-dark-${i}-${j}`}
-                    x1={`${symbol.x}%`}
-                    y1={`${symbol.y}%`}
-                    x2={`${otherSymbol.x}%`}
-                    y2={`${otherSymbol.y}%`}
-                    stroke="url(#line-gradient-dark)"
-                    strokeWidth="1.2"
-                    strokeDasharray="4 4"
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity: opacity,
-                      strokeDashoffset: [0, 8, 0],
-                    }}
-                    transition={{
-                      opacity: { duration: 0.5 },
-                      strokeDashoffset: {
-                        duration: 6,
-                        repeat: Infinity,
-                        ease: "linear",
-                      },
-                    }}
-                  />
-                );
-              }
-              return null;
-            })
-          )}
-        </g>
-
-        {/* Animated particles flowing along connections */}
-        {[...Array(12)].map((_, i) => {
-          if (floatingSymbols.length < 2) return null;
-
-          const startIdx = Math.floor(Math.random() * floatingSymbols.length);
-          let endIdx = Math.floor(Math.random() * floatingSymbols.length);
-          while (endIdx === startIdx) {
-            endIdx = Math.floor(Math.random() * floatingSymbols.length);
-          }
-
-          const startSymbol = floatingSymbols[startIdx];
-          const endSymbol = floatingSymbols[endIdx];
-
-          return (
-            <motion.circle
-              key={`flow-${i}`}
-              r="1.8"
-              fill={document.documentElement.classList.contains('dark') ? '#fff' : '#000'}
-              className="opacity-40"
-              animate={{
-                cx: [
-                  `${startSymbol.x}%`,
-                  `${endSymbol.x}%`,
-                  `${startSymbol.x}%`,
-                ],
-                cy: [
-                  `${startSymbol.y}%`,
-                  `${endSymbol.y}%`,
-                  `${startSymbol.y}%`,
-                ],
-                opacity: [0, 0.6, 0],
-                scale: [0.5, 1.5, 0.5],
-              }}
-              transition={{
-                duration: 7 + i * 1.5,
-                repeat: Infinity,
-                ease: "linear",
-                delay: i * 1.2,
-              }}
-            />
-          );
-        })}
-      </svg>
-
-      {/* Subtle gradient overlays for depth */}
-      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white dark:from-black dark:via-transparent dark:to-black opacity-40 pointer-events-none z-5" />
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white dark:from-black dark:via-transparent dark:to-black opacity-40 pointer-events-none z-5" />
+      {/* REMOVED: Connection lines SVG */}
+      {/* REMOVED: Animated particles */}
+      {/* REMOVED: Gradient overlays for depth */}
 
       {/* Main Content */}
       <motion.div
@@ -461,7 +313,7 @@ const Hero = ({ scrollTo }) => {
         </motion.div>
       </motion.div>
 
-      {/* Gradient Fades */}
+      {/* Gradient Fades - Kept for clean edges */}
       <div className="absolute top-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-b from-white dark:from-black to-transparent pointer-events-none z-5" />
       <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-40 bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-5" />
     </section>

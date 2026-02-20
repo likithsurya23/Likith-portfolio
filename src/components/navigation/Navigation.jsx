@@ -12,16 +12,22 @@ const Navigation = ({ activeSection, scrollTo }) => {
     // Check for saved theme preference
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     if (savedTheme === 'light') {
       setIsDarkMode(false);
       document.documentElement.classList.remove('dark');
-    } else if (savedTheme === 'dark' || prefersDark) {
+    } else if (savedTheme === 'dark') {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
+    } else if (prefersDark) {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    } else {
+      // No saved preference and user prefers light
+      setIsDarkMode(false);
+      document.documentElement.classList.remove('dark');
     }
   }, []);
-
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -50,7 +56,7 @@ const Navigation = ({ activeSection, scrollTo }) => {
 
   // Simplified button animation for better performance
   const buttonVariants = {
-    hover: { 
+    hover: {
       scale: 1.02,
       transition: { type: "spring", stiffness: 400, damping: 25, mass: 0.5 }
     },
@@ -69,16 +75,15 @@ const Navigation = ({ activeSection, scrollTo }) => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 200, damping: 25, mass: 0.8 }}
-        className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-          isScrolled 
-            ? 'bg-white dark:bg-black py-2 md:py-3 shadow-md border-b border-black dark:border-white' 
+        className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled
+            ? 'bg-white dark:bg-black py-2 md:py-3 shadow-md border-b border-black dark:border-white'
             : 'bg-transparent py-3 md:py-6'
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo - Responsive sizing */}
-            <motion.div 
+            <motion.div
               className="flex items-center gap-2 md:gap-3 cursor-pointer group"
               onClick={() => handleScrollTo('home')}
               whileHover={{ scale: 1.02 }}
@@ -115,23 +120,21 @@ const Navigation = ({ activeSection, scrollTo }) => {
                   whileTap="tap"
                   variants={buttonVariants}
                   onClick={() => handleScrollTo(link.id)}
-                  className={`relative px-3 lg:px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
-                    activeSection === link.id 
-                      ? 'text-white dark:text-black' 
+                  className={`relative px-3 lg:px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${activeSection === link.id
+                      ? 'text-white dark:text-black'
                       : 'text-black dark:text-white hover:text-black dark:hover:text-white'
-                  }`}
+                    }`}
                 >
                   {/* Background with optimized animation */}
                   <motion.div
-                    className={`absolute inset-0 rounded-lg transition-colors duration-200 ${
-                      activeSection === link.id
+                    className={`absolute inset-0 rounded-lg transition-colors duration-200 ${activeSection === link.id
                         ? 'bg-black dark:bg-white'
                         : 'bg-transparent group-hover:bg-black/10 dark:group-hover:bg-white/10'
-                    }`}
+                      }`}
                     layoutId={activeSection === link.id ? "activeNavBackground" : undefined}
                     transition={{ type: "spring", stiffness: 350, damping: 30, mass: 0.5 }}
                   />
-                  
+
                   {/* Button text */}
                   <span className="relative z-10">
                     {link.label}
@@ -197,7 +200,7 @@ const Navigation = ({ activeSection, scrollTo }) => {
                     ease: "easeInOut",
                   }}
                 />
-                
+
                 {/* Button content */}
                 <span className="relative z-10 flex items-center gap-2 text-white dark:text-black font-semibold text-sm">
                   Let's Talk
@@ -220,14 +223,14 @@ const Navigation = ({ activeSection, scrollTo }) => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {isDarkMode ? 
-                  <Sun size={18} className="text-black dark:text-white" /> : 
+                {isDarkMode ?
+                  <Sun size={18} className="text-black dark:text-white" /> :
                   <Moon size={18} className="text-black dark:text-white" />
                 }
               </motion.button>
 
               {/* Mobile menu button */}
-              <motion.button 
+              <motion.button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="p-2 border-2 border-black dark:border-white bg-white dark:bg-black rounded-lg hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-200"
                 whileHover={{ scale: 1.05 }}
@@ -280,14 +283,14 @@ const Navigation = ({ activeSection, scrollTo }) => {
               transition={{ duration: 0.2 }}
               className="absolute inset-0 bg-white dark:bg-black"
             />
-            
+
             {/* Menu content */}
             <div className="relative flex flex-col items-center justify-center h-full px-4">
               {/* Background decoration - Pure Black/White */}
               <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[500px] h-[400px] sm:h-[500px] bg-black/5 dark:bg-white/5 rounded-full blur-3xl" />
               </div>
-              
+
               {/* Navigation links */}
               <div className="relative z-10 flex flex-col items-center gap-2 w-full max-w-sm">
                 {navLinks.map((link, i) => (
@@ -301,23 +304,21 @@ const Navigation = ({ activeSection, scrollTo }) => {
                     className="relative w-full group"
                   >
                     <motion.div
-                      className={`absolute inset-0 rounded-xl transition-all duration-200 ${
-                        activeSection === link.id
+                      className={`absolute inset-0 rounded-xl transition-all duration-200 ${activeSection === link.id
                           ? 'bg-black dark:bg-white'
                           : 'bg-transparent group-hover:bg-black/10 dark:group-hover:bg-white/10'
-                      }`}
+                        }`}
                       whileTap={{ scale: 0.98 }}
                     />
-                    
+
                     <div className="relative flex items-center justify-between px-6 py-4">
-                      <span className={`text-lg font-medium transition-colors duration-200 ${
-                        activeSection === link.id 
-                          ? 'text-white dark:text-black' 
+                      <span className={`text-lg font-medium transition-colors duration-200 ${activeSection === link.id
+                          ? 'text-white dark:text-black'
                           : 'text-black dark:text-white group-hover:text-black dark:group-hover:text-white'
-                      }`}>
+                        }`}>
                         {link.label}
                       </span>
-                      
+
                       {activeSection === link.id && (
                         <motion.div
                           initial={{ scale: 0 }}
@@ -330,7 +331,7 @@ const Navigation = ({ activeSection, scrollTo }) => {
                     </div>
                   </motion.button>
                 ))}
-                
+
                 {/* Mobile contact button */}
                 <motion.button
                   initial={{ opacity: 0, y: 20 }}
