@@ -1,11 +1,11 @@
 // File: src/sections/contact/Contact.jsx
 import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import emailjs from "@emailjs/browser";
 import {
   Mail,
   Github,
   Linkedin,
-  MapPin,
   Send,
   CheckCircle,
   Sparkles,
@@ -28,52 +28,44 @@ const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [focused, setFocused] = useState(null);
 
+  // EmailJS submit function
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    await new Promise((res) => setTimeout(res, 1200));
+    try {
+      await emailjs.send(
+        "service_d61erkn",      // replace with your service ID
+        "template_u51zkga",     // replace with your template ID
+        {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        },
+        "WPog6C5XfDSP2-eqr"       // replace with your public key
+      );
+
+      setIsSubmitted(true);
+      setFormData({ name: "", email: "", message: "" });
+
+      setTimeout(() => setIsSubmitted(false), 4000);
+    } catch (error) {
+      console.error("Email sending failed:", error);
+      alert("Something went wrong. Please try again.");
+    }
 
     setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormData({ name: "", email: "", message: "" });
-
-    setTimeout(() => setIsSubmitted(false), 4000);
   };
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const contactLinks = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: "likithsurya231@gmail.com",
-      href: "mailto:likithsurya231@gmail.com",
-    },
-    {
-      icon: Github,
-      label: "GitHub",
-      value: "likithsurya23",
-      href: "https://github.com/likithsurya23",
-    },
-    {
-      icon: Linkedin,
-      label: "LinkedIn",
-      value: "likith--d",
-      href: "https://linkedin.com/in/likith--d",
-    },
-  ];
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      }
-    }
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    },
   };
 
   const itemVariants = {
@@ -81,28 +73,17 @@ const Contact = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
     <section
       id="contact"
-      className="py-16 sm:py-20 md:py-24 lg:py-32 relative overflow-hidden bg-white dark:bg-black transition-colors duration-500"
+      className="py-20 relative overflow-hidden bg-white dark:bg-black transition-colors duration-500"
     >
-      {/* Simple Border Decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 right-0 h-px bg-black/10 dark:bg-white/10" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 dark:bg-white/10" />
-      </div>
+      <div ref={ref} className="max-w-3xl mx-auto px-4 relative z-10">
 
-      <div
-        ref={ref}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
-      >
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -110,173 +91,113 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
         >
           <SectionHeading subtitle="Let's Connect">
-            <span className="flex items-center justify-center gap-2 sm:gap-3">
+            <span className="flex items-center justify-center gap-2">
               Get In Touch
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black/40 dark:text-white/40" />
+              <Sparkles className="w-5 h-5 text-black/40 dark:text-white/40" />
             </span>
           </SectionHeading>
         </motion.div>
 
-        {/* Layout */}
+        {/* Stacked Layout - Same on all screen sizes */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-10 lg:gap-12 mt-12 sm:mt-14 md:mt-16"
+          className="flex flex-col gap-10 mt-16"
         >
-          {/* LEFT SIDE */}
-          <motion.div variants={itemVariants} className="lg:col-span-2 space-y-5 sm:space-y-6">
-            <p className="text-sm sm:text-base text-black/60 dark:text-white/60 leading-relaxed">
-              Have a project idea or collaboration in mind? I'm always open to
-              discussing new opportunities and innovative ideas.
+
+          {/* TOP SECTION - Intro text and download button */}
+          <motion.div variants={itemVariants} className="space-y-6 text-center">
+            <p className="text-black/60 dark:text-white/60 text-lg leading-relaxed max-w-2xl mx-auto">
+              Have a project idea or collaboration in mind? I'm open to discussing new opportunities and challenges.
             </p>
 
-            {/* Contact Cards */}
-            <div className="space-y-3 sm:space-y-4">
-              {contactLinks.map((item) => (
-                <motion.div
-                  key={item.label}
-                  whileHover={{ y: -2 }}
-                  className="p-4 sm:p-5 rounded-xl border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all"
-                >
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <item.icon className="w-4 h-4 sm:w-5 sm:h-5 text-black/50 dark:text-white/50 flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[10px] sm:text-xs text-black/40 dark:text-white/40 uppercase tracking-wider">
-                        {item.label}
-                      </p>
-                      {item.href ? (
-                        <a
-                          href={item.href}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-xs sm:text-sm text-black dark:text-white hover:text-black/70 dark:hover:text-white/70 transition-colors block truncate"
-                        >
-                          {item.value}
-                        </a>
-                      ) : (
-                        <p className="text-xs sm:text-sm text-black dark:text-white truncate">
-                          {item.value}
-                        </p>
-                      )}
-                    </div>
-                    {item.href && (
-                      <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 text-black/30 dark:text-white/30 flex-shrink-0" />
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            <p className="text-black/60 dark:text-white/60 max-w-xl mx-auto">
+              Fill out the form below and I'll get back to you as soon as possible.
+            </p>
 
-            {/* Resume */}
-            <motion.a
-              whileHover={{ y: -2 }}
-              href="/resume.pdf"
-              download
-              className="flex items-center justify-between p-4 sm:p-5 rounded-xl border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all group"
-            >
-              <div className="flex items-center gap-2 sm:gap-3">
-                <Download size={16} className="sm:w-[18px] sm:h-[18px] text-black/50 dark:text-white/50 group-hover:text-black dark:group-hover:text-white transition-colors" />
-                <span className="text-xs sm:text-sm text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white transition-colors">
-                  Download Resume
-                </span>
-              </div>
-              <ArrowUpRight size={14} className="sm:w-4 sm:h-4 text-black/30 dark:text-white/30 group-hover:text-black dark:group-hover:text-white transition-colors" />
-            </motion.a>
           </motion.div>
 
-          {/* RIGHT SIDE - FORM */}
-          <motion.div variants={itemVariants} className="lg:col-span-3">
-            <form onSubmit={handleSubmit} className="p-5 sm:p-6 md:p-7 lg:p-8 rounded-2xl md:rounded-3xl border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black">
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-black dark:text-white mb-5 sm:mb-6">
+          {/* BOTTOM SECTION - Form */}
+          <motion.div variants={itemVariants}>
+            <form
+              onSubmit={handleSubmit}
+              className="p-6 sm:p-8 rounded-3xl border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black"
+            >
+              <h3 className="text-2xl font-bold mb-6 text-black dark:text-white text-center sm:text-left">
                 Send a Message
               </h3>
 
               {/* Inputs */}
-              <div className="grid sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-5 sm:mb-6">
+              <div className="grid sm:grid-cols-2 gap-6 mb-6">
                 {["name", "email"].map((field) => (
                   <div key={field} className="relative">
                     <input
                       type={field === "email" ? "email" : "text"}
                       name={field}
-                      id={field}
+                      placeholder={field === "name" ? "Your Name" : "Your Email"}
                       value={formData[field]}
                       onChange={handleChange}
                       onFocus={() => setFocused(field)}
                       onBlur={() => setFocused(null)}
                       required
-                      aria-label={field === "name" ? "Your Name" : "Your Email"}
-                      className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white dark:bg-black border-2 border-black/20 dark:border-white/20 rounded-lg sm:rounded-xl text-black dark:text-white focus:border-black dark:focus:border-white outline-none transition-all text-sm sm:text-base"
+                      className="w-full px-4 py-4 bg-white dark:bg-black border-2 border-black/20 dark:border-white/20 rounded-xl text-black dark:text-white focus:border-black dark:focus:border-white outline-none transition-all"
                     />
-                    <label
-                      htmlFor={field}
-                      className={`absolute left-3 sm:left-4 transition-all pointer-events-none ${formData[field] || focused === field
-                        ? "-top-2 sm:-top-2.5 text-[10px] sm:text-xs bg-white dark:bg-black px-1 text-black/60 dark:text-white/60"
-                        : "top-3 sm:top-4 text-xs sm:text-sm text-black/40 dark:text-white/40"
-                        }`}
-                    >
-                      {field === "name" ? "Your Name" : "Your Email"}
-                    </label>
                   </div>
-                ))}              </div>
+                ))}
+              </div>
 
               {/* Message */}
-              <div className="relative mb-5 sm:mb-6">
+              <div className="relative mb-6">
                 <textarea
                   name="message"
-                  id="message"
                   rows={5}
+                  placeholder="Your Message"
                   value={formData.message}
                   onChange={handleChange}
                   onFocus={() => setFocused("message")}
                   onBlur={() => setFocused(null)}
                   required
-                  aria-label="Your Message"
-                  className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white dark:bg-black border-2 border-black/20 dark:border-white/20 rounded-lg sm:rounded-xl text-black dark:text-white focus:border-black dark:focus:border-white outline-none transition-all resize-none text-sm sm:text-base"
+                  className="w-full px-4 py-4 bg-white dark:bg-black border-2 border-black/20 dark:border-white/20 rounded-xl text-black dark:text-white focus:border-black dark:focus:border-white outline-none resize-none transition-all"
                 />
-                <label
-                  htmlFor="message"
-                  className={`absolute left-3 sm:left-4 transition-all pointer-events-none ${formData.message || focused === "message"
-                      ? "-top-2 sm:-top-2.5 text-[10px] sm:text-xs bg-white dark:bg-black px-1 text-black/60 dark:text-white/60"
-                      : "top-3 sm:top-4 text-xs sm:text-sm text-black/40 dark:text-white/40"
-                    }`}
-                >
-                  Your Message
-                </label>
-              </div>              {/* Button */}
+              </div>
+
+              {/* Button */}
               <motion.button
                 type="submit"
                 disabled={isSubmitting || isSubmitted}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`w-full py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base flex items-center justify-center gap-2 transition-all border-2 ${isSubmitted
-                  ? "border-black/20 dark:border-white/20 bg-white dark:bg-black text-black/60 dark:text-white/60"
-                  : "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white"
-                  }`}
+                className="w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 border-2 border-black dark:border-white bg-black dark:bg-white text-white dark:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                    Sending...
-                  </div>
+                  "Sending..."
                 ) : isSubmitted ? (
                   <>
-                    <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <CheckCircle size={18} />
                     Message Sent!
                   </>
                 ) : (
                   <>
-                    <Send size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <Send size={18} />
                     Send Message
                   </>
                 )}
               </motion.button>
-
-              <p className="text-center text-[10px] sm:text-xs text-black/30 dark:text-white/30 mt-3 sm:mt-4">
-                I usually respond within 24 hours.
-              </p>
             </form>
           </motion.div>
+          {/* Download Resume Button */}
+
+          <motion.a
+            whileHover={{ y: -2 }}
+            href="https://drive.google.com/file/d/1BSLH9T8mhp0Jcwmo4qbFK5VVRB6yfjW1/view?usp=drive_link"
+            download
+            className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl border-2 border-black/20 dark:border-white/20 bg-white dark:bg-black hover:border-black dark:hover:border-white transition-all mt-4"
+          >
+            <Download size={18} className="text-black/50 dark:text-white/50" />
+            <span className="text-black dark:text-white">Download Resume</span>
+            <ArrowUpRight size={16} className="text-black/30 dark:text-white/30" />
+          </motion.a>
         </motion.div>
       </div>
     </section>

@@ -177,7 +177,7 @@ const Projects = () => {
             { label: "Total Projects", value: "10+", icon: Code2 },
             { label: "AI/ML", value: "6+", icon: Brain },
             { label: "Stars", value: "124+", icon: Star },
-            { label: "Live Demos", value: "8+", icon: Globe },
+            { label: "Live Demos", value: "5+", icon: Globe },
           ].map((stat) => (
             <div
               key={stat.label}
