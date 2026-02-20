@@ -1,4 +1,3 @@
-// File: src/components/ui/SectionHeading.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -22,17 +21,17 @@ const SectionHeading = ({ children, subtitle, align = 'center' }) => {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
+        className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/20 dark:border-white/20 bg-white dark:bg-black mb-6"
       >
-        <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-        <span className="text-xs font-medium text-white/40 uppercase tracking-widest">{subtitle}</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white animate-pulse" />
+        <span className="text-xs font-medium text-black/60 dark:text-white/60 uppercase tracking-widest">{subtitle}</span>
       </motion.div>
       
-      <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
+      <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black dark:text-white mb-6 tracking-tight">
         {children}
       </h2>
       
-      <div className={`h-px w-24 bg-gradient-to-r from-white/40 to-transparent ${align === 'center' ? 'mx-auto' : ''}`} />
+      <div className={`h-px w-24 bg-gradient-to-r from-black/40 to-transparent dark:from-white/40 dark:to-transparent ${align === 'center' ? 'mx-auto' : ''}`} />
     </motion.div>
   );
 };
